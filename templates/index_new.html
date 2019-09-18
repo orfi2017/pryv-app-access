@@ -1,0 +1,94 @@
+<table>
+        <tbody><tr>
+            <td class="leftColumn"><p><b>Register URL</b></p></td>
+            <td class="rightColumn"><p id="registerUrlText">reg.pryv.me</p></td>
+        </tr>
+        <tr>
+            <td class="leftColumn"><p><b>Application ID</b> (min length: 6)</p></td>
+            <td class="rightColumn"><input id="requestingAppId" type="text" value="app-web-access-test"></td>
+        </tr>
+        <tr>
+            <td class="leftColumn">
+                <p><b>Permissions</b> (See <a href="http://api.pryv.com/reference/#authorizing-your-app" target="_blank">API doc</a>)</p>
+                <div class="checkboxDiv">
+                    <input type="checkbox" name="masterToken" id="masterToken">
+                    <label for="masterToken">Master Token</label>
+                </div>
+            </td>
+            <td class="rightColumn">
+                <div id="permissionsViewInactive" style="display: none;"></div>
+                <div id="permissionsViewActive">
+                    <textarea id="permissionsArea"></textarea>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <button id="toggleDev">Show/hide advanced options</button>
+            </td>
+        </tr>
+        <tr style="display: none;">
+            <td class="leftColumn">
+                <p><b>Authorization popup</b></p>
+                    <input type="checkbox" name="localAuth" id="localAuth">
+                    <label for="localAuth">Run on local web-auth (port 4443)</label>
+            </td>
+            <td class="rightColumn"><input name="reclaDevel" id="reclaDevel" type="text"></td>
+        </tr>
+        <tr style="display: none;">
+            <td class="leftColumn"><p><b>Language</b></p></td>
+            <td class="rightColumn">
+                <select name="languageCode" id="languageCode">
+                <option value="default">Browser</option>
+                <option value="en">English</option>
+                <option value="fr">French</option> </select>
+            </td>
+        </tr>
+        <tr style="display: none;">
+            <td class="leftColumn">
+                <p><b>Return URL (postlogin url)</b></p>
+                <p>auto# by default</p>
+                <p>self# or other url to avoid popup</p>
+            </td>
+            <td class="rightColumn"><input id="returnURL" name="returnURL" type="text" value="auto#"></td>
+        </tr>
+        <tr style="display: none;">
+            <td class="leftColumn"><p><b>State to simulate oauth</b><br>(needs returnURL)</p></td>
+            <td class="rightColumn"><input id="oauthState" name="oauthState" type="text"></td>
+        </tr>
+        <tr style="display: none;">
+            <td class="leftColumn">
+                <p><b>ClientData</b></p>
+                <p>a JSON object, for example :
+                <textarea rows="4" readonly="">{"app-web-auth:description": {"type": "note/txt","content": "This is a consent message."}}
+                </textarea>
+                </p>
+            </td>
+            <td class="rightColumn"><textarea rows="8" id="clientDataArea"></textarea></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input id="submitButton" type="submit" value="Request Access">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div id="pryvButtonHolder">
+                    <center><span id="pryvButton"><div id="pryv-access-btn" class="pryv-access-btn-signin" data-onclick-action="In"><a class="pryv-access-btn pryv-access-btn-pryv-access-color" href="#"><span class="logoSignin">Y</span></a><a class="pryv-access-btn pryv-access-btn-pryv-access-color" href="#"><span>orfeas</span></a></div></span></center>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="leftColumn"><p><b>Username</b></p></td>
+            <td class="rightColumn"><p id="usernameArea">orfeas</p></td>
+        </tr>
+        <tr>
+            <td class="leftColumn"><p><b>Access token</b></p></td>
+            <td class="rightColumn"><p id="tokenArea">ck0m7cv5c002g1j4004t7yzuv</p></td>
+        </tr>
+        <tr>
+            <td class="leftColumn"><p><b>Domain</b></p></td>
+            <td class="rightColumn"><p id="domainArea">pryv.me</p></td>
+        </tr>
+</tbody></table>
