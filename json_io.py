@@ -3,7 +3,7 @@
 import sys
 
 from flask import Flask, render_template, request, redirect, Response
-import random, json
+
 
 app = Flask(__name__)
 

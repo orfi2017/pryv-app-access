@@ -26,9 +26,9 @@ function doWork(data) {
 	var url = "https://reg.pryv.me/access"
 	// ajax the JSON to the server
 	$.post(url, JSON.stringify(data), function(d, status){
-<!--	    console.log("Data: " + JSON.stringify(d) + "\nStatus: " + status);-->
         url=d['url'];
 	    console.log("url: " + JSON.stringify(url) + "\nStatus: " + status);
+	    start_polling(d['poll']);
         $("#sign_in").append("<a href="+url+"> <img src='../assets/logo-pryv.png'>");
         console.log("<a href="+url+"target='popup' onclick='window.open("+url+",'popup','width=600,height=600'); return false;> Open Link in Popup </a>")
         $("#sign_in").append("<button onclick=window.open('"+url+"','popup','width=600,height=600'); return false;> Open Link in Popup </button>");
@@ -36,6 +36,27 @@ function doWork(data) {
 	// stop link reloading the page
  event.preventDefault();
 }
+
+function start_polling(poll_url){
+    console.log(poll_url);
+    window.setInterval(function(){
+        $.get(poll_url, function(d, status){
+            console.log(d['status']);
+            if (d['code'] == 200) {
+                var username = d['username'];
+                var token = d['token'];
+                data = {"username"=d['username'],"token" = d['token']};
+                console.log(typeof data, data);
+                window.clearInterval(intervalID);
+                $.post("/access", JSON.stringify(data), function(d,status){
+                    console.log(status);
+                })
+            }
+        });
+    },1);
+}
+
+
 
 var default_app_id = "test-app-id"
 
@@ -66,3 +87,4 @@ $("#submitButton").click(function(){
 <!--    doWork(data) ;-->
 
 });
+

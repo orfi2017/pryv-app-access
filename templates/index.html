@@ -92,20 +92,34 @@ function doWork(data) {
 	var url = "https://reg.pryv.me/access"
 	// ajax the JSON to the server
 	$.post(url, JSON.stringify(data), function(d, status){
-        url=d['url'];
-	    console.log("url: " + JSON.stringify(url) + "\nStatus: " + status);
-<!--        $("#sign_in").append("<a href="+url+"> <img src='../assets/logo-pryv.png' target='popup' onclick='window.open('http://kanishkkunal.in','popup','width=600,height=600'); >"-->
-        console.log("<a href="+url+"target='popup' onclick='window.open("+url+",'popup','width=600,height=600'); return false;> Open Link in Popup </a>")
-<!--        $("#sign_in").append("<a href="+url+"target='popup' onclick=window.open('"+url+"','popup','width=600,height=600'); return false;> Open Link in Popup </a>");-->
-        $("#sign_in").append("<button onclick=window.open('"+url+"','popup','width=600,height=600'); return false;> Open Link in Popup </button>");
+       url=d['url'];
+ 	   start_polling(d['poll']);
+       $("#sign_in").append("<button onclick=window.open('"+url+"','popup','width=600,height=600'); return false;> Open Link in Popup </button>");
 
 	});
 	// stop link reloading the page
  event.preventDefault();
 }
 
-//"requestingAppId": "test-app-id",
-//  "requestedPermissions":
+function start_polling(poll_url){
+    console.log(poll_url);
+    let intervalID = window.setInterval(function(){
+        $.get(poll_url, function(d, status){
+            console.log(d['status']);
+            if (d['code'] == 200) {
+                var username = d['username'];
+                var token = d['token'];
+                data = {"username":d['username'],"token" : d['token']};
+                console.log(typeof data, data);
+                window.clearInterval(intervalID);
+                $.post("/access", JSON.stringify(data), function(d,status){
+                    console.log(status);
+                })
+            }
+        });
+    },3000);
+}
+
 var default_app_id = "test-app-id"
 
 var default_permissions_data= [
