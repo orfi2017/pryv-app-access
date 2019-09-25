@@ -112,7 +112,8 @@ function start_polling(poll_url){
                 data = {"username":d['username'],"token" : d['token']};
                 console.log(typeof data, data);
                 window.clearInterval(intervalID);
-                $.post("/access", JSON.stringify(data), function(d,status){
+                console.log("post request");
+                $.post("https://0.0.0.0:8000/access", JSON.stringify(data), function(d,status){
                     console.log(status);
                 })
             }
