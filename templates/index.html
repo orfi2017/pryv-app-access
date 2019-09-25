@@ -3,20 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
 <table align="center">
         <tbody>
         <tr>
             <td class="leftColumn"><p><b>Expert username</b></p></td>
-            <td class="rightColumn"><input id="expert-username" type="username"></td>
+            <td class="rightColumn"><input id="expert-username"></td>
         </tr>
         <tr>
             <td class="leftColumn"><p><b>Expert password</b></p></td>
             <td class="rightColumn"><input id="expert-password" type="password"></td>
         </tr>
+        <tr>
+            <td class="leftColumn"><p><b>Application ID: </b></p></td>
+            <td class="rightColumn"><input id="app-id" type="text"></td>
+        </tr>
         </tbody>
 </table>
 <div align="center"><button id="login-button">Login</button></div>
 </body>
+<script type="text/javascript">
+
+$("#login-button").click(function(){
+    username = $('#expert-username').val();
+    password = $('#expert-password').val();
+    app_id = $('#app-id').val();
+    auth_login(app_id, username, password);
+
+
+});
+
+function auth_login(app_id, username, password){
+    $.ajaxSetup({
+      contentType: "application/json; charset=utf-8",
+      headers : {'Origin':'https://'+app_id+'.pryv.me'}
+    });
+
+    url = "https://"+username+".pryv.me/auth/login";
+    creds = {
+        "username": username,
+        "password": password,
+        "appId": app_id
+    }
+
+	// ajax the JSON to the server
+	$.post(url, JSON.stringify(creds), function(d, status){
+        // Use expert's token to create a stream dedicated to storing patient credentials:
+        stream = {"id": "patients-credentials","name": "Patient accessses"};
+        token = d['token'];
+        username = creds['username'];
+        create_stream(username, stream, token);
+	});
+
+}
+
+function create_stream(username, stream, token){
+    url = "https://"+username+".pryv.me/streams";
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: JSON.stringify(stream),
+        headers: {"authorization": token},
+        dataType: 'json',
+        success: function (data) {
+            console.info(data);
+        }
+    });
+}
+</script>
 </html>

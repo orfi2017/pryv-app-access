@@ -14,13 +14,14 @@ app = Flask(__name__)
 def main():
     # serve index template
     # return render_template('index.html')
-    return render_template('index.html')
+    return render_template('index_permissions.html')
 
 
 @app.route('/access', methods=['POST'])
 def worker():
     # read json + reply
     data = request.get_json()
+    print('data')
     stream_parser = StreamParser(user=data['username'], token=data['token'])
     annotations = stream_parser.get_annotations()
     result = ''
@@ -30,4 +31,4 @@ def worker():
 
 if __name__ == '__main__':
     # run!
-    app.run(host='0.0.0.0', port=8000)
+    app.run(host='127.0.0.1', ssl_context='adhoc')
