@@ -1,115 +1,159 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/request_permissions.js"></script>
 </head>
 <body>
+<div align="center">
+    <p><b>Setup permissions required from patient</b></p>
+    <p>Enter permissions that you wish to request from patients:</p>
+</div>
 <table align="center">
         <tbody>
         <tr>
-            <td class="leftColumn"><p><b>Expert username</b></p></td>
-            <td class="rightColumn"><input id="expert-username"></td>
+            <td class="leftColumn"><p><b>Application ID</b> (min length: 6)</p></td>
+            <td class="rightColumn"><input id="requestingAppId" type="text" value="app-web-access-test"></td>
         </tr>
         <tr>
-            <td class="leftColumn"><p><b>Expert password</b></p></td>
-            <td class="rightColumn"><input id="expert-password" type="password"></td>
+            <td class="leftColumn">
+                <p><b>Permissions</b> (See <a href="http://api.pryv.com/reference/#authorizing-your-app" target="_blank">API doc</a>)</p>
+            </td>
+            <td class="rightColumn">
+                <div id="permissionsViewInactive" style="display: none;"></div>
+                <div id="permissionsViewActive">
+                    <textarea id="permissionsArea" rows="10" cols="50"></textarea>
+                </div>
+            </td>
+        </tr>
+
+        <tr style="display: none;">
+            <td class="leftColumn">
+                <p><b>Authorization popup</b></p>
+                    <input type="checkbox" name="localAuth" id="localAuth">
+                    <label for="localAuth">Run on local web-auth (port 4443)</label>
+            </td>
+            <td class="rightColumn"><input name="reclaDevel" id="reclaDevel" type="text"></td>
+        </tr>
+        <tr style="display: none;">
+            <td class="leftColumn"><p><b>Language</b></p></td>
+            <td class="rightColumn">
+                <select name="languageCode" id="languageCode">
+                <option value="default">Browser</option>
+                <option value="en">English</option>
+                <option value="fr">French</option> </select>
+            </td>
+        </tr>
+        <tr style="display: none;">
+            <td class="leftColumn">
+                <p><b>Return URL (postlogin url)</b></p>
+                <p>auto# by default</p>
+                <p>self# or other url to avoid popup</p>
+            </td>
+            <td class="rightColumn"><input id="returnURL" name="returnURL" type="text" value="auto#"></td>
+        </tr>
+        <tr style="display: none;">
+            <td class="leftColumn"><p><b>State to simulate oauth</b><br>(needs returnURL)</p></td>
+            <td class="rightColumn"><input id="oauthState" name="oauthState" type="text"></td>
         </tr>
         <tr>
-            <td class="leftColumn"><p><b>Application ID: </b></p></td>
-            <td class="rightColumn"><input id="app-id" type="text"></td>
+            <td colspan="2">
+                <input id="request-access" type="submit" value="Request Access">
+            </td>
         </tr>
-        </tbody>
-</table>
-<div id="patients-creds" align="center"><button id="login-button">Login</button></div>
+</tbody></table>
+<!--<div id="permissionsViewActive">-->
+<!--    <textarea id="permissionsArea"></textarea>-->
+<!--</div>-->
+<!--<button id="theButton">Request access</button>-->
+<div id="sign_in" align="center">
+</div>
 </body>
+
 <script type="text/javascript">
 
-$("#login-button").click(function(){
-    username = $('#expert-username').val();
-    password = $('#expert-password').val();
-    app_id = $('#app-id').val();
-    auth_login(app_id, username, password);
-});
 
-function auth_login(app_id, username, password){
-    $.ajaxSetup({
-      contentType: "application/json; charset=utf-8"
-<!--      headers : {'Origin':'https://'+app_id+'.pryv.me'}-->
-    });
+<!--window.onload = function() {-->
+<!--    const data = {-->
+<!--                  "requestingAppId": "test-app-id-2",-->
+<!--                  "requestedPermissions": [-->
+<!--                    {-->
+<!--                      "streamId": "diary",-->
+<!--                      "level": "read",-->
+<!--                      "defaultName": "Journal"-->
+<!--                    },-->
+<!--                    {-->
+<!--                      "streamId": "position",-->
+<!--                      "level": "contribute",-->
+<!--                      "defaultName": "Position"-->
+<!--                    }-->
+<!--                  ]};-->
+<!--&lt;!&ndash;    doWork(data)&ndash;&gt;-->
+<!--};-->
 
-    url = "https://"+username+".pryv.me/auth/login";
-    creds = {
-        "username": username,
-        "password": password,
-        "appId": app_id
-    }
+<!--function doWork(data) {-->
+<!--    $.ajaxSetup({-->
+<!--      contentType: "application/json; charset=utf-8"-->
+<!--    });-->
+<!--	var url = "https://reg.pryv.me/access"-->
+<!--	// ajax the JSON to the server-->
+<!--	$.post(url, JSON.stringify(data), function(d, status){-->
+<!--       url=d['url'];-->
+<!-- 	   start_polling(d['poll']);-->
+<!--       $("#sign_in").append("<button onclick=window.open('"+url+"','popup','width=600,height=600'); return false;> Open Link in Popup </button>");-->
 
-    $.ajax({
-        url: url,
-        type: 'post',
-        data: JSON.stringify(creds),
-        headers: {'Origin':'https://'+app_id+'.pryv.me'},
-        dataType: 'json',
-        success: function (d) {
-            token = d['token'];
-            username = creds['username'];
-            // append stream for patients
-            $("#patients-creds").append(
-            "<p>Create a stream dedicated to storing patient credentials:</p>" +
-            "<p><textarea id='patients-stream' rows='10' cols='50'></textarea></p>"+
-            "<p>Give a name for creating access for this stream: <textarea id='access-name' rows='1' cols='10'></textarea></p>"+
-            "<p><button id='create-stream-access'>Create stream and access</button></p>"
-            );
-            $("#create-stream-access").click(function(){
-                alert('clicked');
-                stream = $('#patients-stream').val();
-                create_stream_access(username, stream, token);
-            });
-        }
-    });
-}
+<!--	});-->
+<!--	// stop link reloading the page-->
+<!-- event.preventDefault();-->
+<!--}-->
 
-function create_stream_access(username, stream, token){
-    url = "https://"+username+".pryv.me/streams";
-    console.log(token, typeof token);
-    $.ajax({
-        url: url,
-        type: 'post',
-        data: stream,
-        headers: {"authorization": token},
-        dataType: 'json',
-        success: function (data) {
-            stream = JSON.parse(stream)
-            console.log('stream created successfully', stream, typeof stream);
-            name = $("#access-name").val();
-            data = {
-                        "name": name,
-                        "permissions": [{
-                            "streamId": stream.id,
-                            "level": "contribute"
-                        }]
-                   };
-            create_access(username, data, token)
-        }
-    });
-}
+<!--function start_polling(poll_url){-->
+<!--    console.log(poll_url);-->
+<!--    let intervalID = window.setInterval(function(){-->
+<!--        $.get(poll_url, function(d, status){-->
+<!--            console.log(d['status']);-->
+<!--            if (d['code'] == 200) {-->
+<!--                var username = d['username'];-->
+<!--                var token = d['token'];-->
+<!--                data = {"username":d['username'],"token" : d['token']};-->
+<!--                console.log(typeof data, data);-->
+<!--                window.clearInterval(intervalID);-->
+<!--                console.log("post request");-->
+<!--                $.post("https://0.0.0.0:8000/access", JSON.stringify(data), function(d,status){-->
+<!--                    console.log(status);-->
+<!--                })-->
+<!--            }-->
+<!--        });-->
+<!--    },3000);-->
+<!--}-->
 
-function create_access(username, data, token){
-    url = "https://"+username+".pryv.me/accesses";
-    console.log();
-    $.ajax({
-        url: url,
-        type: 'post',
-        data: JSON.stringify(data),
-        headers: {"authorization": token},
-        dataType: 'json',
-        success: function (data) {
-            console.info(data);
-        }
-    });
-}
+<!--var default_app_id = "test-app-id"-->
+
+<!--var default_permissions_data= [-->
+<!--    {-->
+<!--      "streamId": "diary",-->
+<!--      "level": "read",-->
+<!--      "defaultName": "Journal"-->
+<!--    },-->
+<!--    {-->
+<!--      "streamId": "position",-->
+<!--      "level": "contribute",-->
+<!--      "defaultName": "Position"-->
+<!--    }-->
+<!--  ]-->
+
+<!--$("#requestingAppId").val(JSON.stringify(default_app_id));-->
+
+<!--$("#permissionsArea").val(JSON.stringify(default_permissions_data));-->
+
+<!--$("#request-access").click(function(){-->
+<!--    app_id = $("#requestingAppId").val();-->
+<!--    permissions_data = $("#permissionsArea").val();-->
+<!--    console.log(app_id);-->
+<!--    console.log(permissions_data);-->
+<!--    console.log(typeof permissions_data);-->
+<!--    data = {"requestingAppId":JSON.parse(app_id), "requestedPermissions":JSON.parse(permissions_data)}-->
+<!--    doWork(data) ;-->
+<!--});-->
 
 </script>
 </html>

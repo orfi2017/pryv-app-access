@@ -13,8 +13,8 @@ app = Flask(__name__)
 @app.route('/')
 def main():
     # serve index template
+    return render_template('index_login.html')
     # return render_template('index.html')
-    return render_template('index_permissions.html')
 
 
 @app.route('/access', methods=['POST'])
@@ -31,4 +31,4 @@ def worker():
 
 if __name__ == '__main__':
     # run!
-    app.run(host='127.0.0.1', ssl_context='adhoc')
+    app.run(host='127.0.0.1')
