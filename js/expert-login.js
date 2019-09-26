@@ -3,14 +3,12 @@ $("#login-button").click(function(){
     password = $('#expert-password').val();
     app_id = $('#app-id').val();
     auth_login(app_id, username, password);
-
-
 });
 
 function auth_login(app_id, username, password){
     $.ajaxSetup({
       contentType: "application/json; charset=utf-8"
-//      headers : {'Origin':'https://'+app_id+'.pryv.me'}
+<!--      headers : {'Origin':'https://'+app_id+'.pryv.me'}-->
     });
 
     url = "https://"+username+".pryv.me/auth/login";
@@ -33,18 +31,20 @@ function auth_login(app_id, username, password){
             $("#patients-creds").append(
             "<p>Create a stream dedicated to storing patient credentials</p>" +
             "<p><textarea id='patients-stream' rows='10' cols='50'></textarea></p>"+
-            "<p><button id='create-stream'>Create stream</button></p>"
+            "<p>Give a name for creating access for this stream: <textarea id='access-name' rows='1' cols='10'></textarea></p>"+
+            "<p><button id='create-stream-access'>Create stream and access</button></p>"
             );
-            $("#create-stream").click(function(){
+            $("#create-stream-access").click(function(){
                 stream = $('#patients-stream').val();
-                create_stream(username, stream, token);
+                create_stream_access(username, stream, token);
             });
         }
     });
 }
 
-function create_stream(username, stream, token){
+function create_stream_access(username, stream, token){
     url = "https://"+username+".pryv.me/streams";
+    console.log(token, typeof token);
     $.ajax({
         url: url,
         type: 'post',
@@ -52,22 +52,24 @@ function create_stream(username, stream, token){
         headers: {"authorization": token},
         dataType: 'json',
         success: function (data) {
-            alert('stream created successfully');
-//            $.ajax
-//            data = {
-//                        "name": "to store patients accesses",
-//                        "permissions": [{
-//                            "streamId": "patients-credentials",
-//                            "level": "contribute"
-//                        }]
-//                   };
-//            create_access(username, data, token)
+            stream = JSON.parse(stream)
+            console.log('stream created successfully', stream, typeof stream);
+            name = $("#access-name").val();
+            data = {
+                        "name": name,
+                        "permissions": [{
+                            "streamId": stream.id,
+                            "level": "contribute"
+                        }]
+                   };
+            create_access(username, data, token)
         }
     });
 }
 
 function create_access(username, data, token){
     url = "https://"+username+".pryv.me/accesses";
+    console.log();
     $.ajax({
         url: url,
         type: 'post',
@@ -79,5 +81,3 @@ function create_access(username, data, token){
         }
     });
 }
-
-
