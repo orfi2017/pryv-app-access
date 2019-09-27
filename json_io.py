@@ -13,8 +13,8 @@ app = Flask(__name__)
 @app.route('/')
 def main():
     # serve index template
-    return render_template('index_login.html')
-    # return render_template('index.html')
+    return render_template('index.html')
+    # return render_template('request_permissions.html')
 
 
 @app.route('/access', methods=['POST'])

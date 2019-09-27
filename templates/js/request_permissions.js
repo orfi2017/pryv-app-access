@@ -1,6 +1,8 @@
 $(function() {
     var default_app_id = "test-app-id"
-
+    url = window.location.href;
+    url_splitted = url.split('?')
+    expertToken = url_splitted[1].split('=')[1];
     var default_permissions_data= [
         {
           "streamId": "diary",
@@ -19,36 +21,13 @@ $(function() {
     $("#permissionsArea").val(JSON.stringify(default_permissions_data));
 
     $("#request-access").click(function(){
-        alert('clicked');
         app_id = $("#requestingAppId").val();
         permissions_data = $("#permissionsArea").val();
         console.log(app_id);
-        console.log(permissions_data);
-        console.log(typeof permissions_data);
         data = {"requestingAppId":JSON.parse(app_id), "requestedPermissions":JSON.parse(permissions_data)}
         doWork(data) ;
     });
 });
-
-//
-//
-//window.onload = function() {
-//    const data = {
-//                  "requestingAppId": "test-app-id-2",
-//                  "requestedPermissions": [
-//                    {
-//                      "streamId": "diary",
-//                      "level": "read",
-//                      "defaultName": "Journal"
-//                    },
-//                    {
-//                      "streamId": "position",
-//                      "level": "contribute",
-//                      "defaultName": "Position"
-//                    }
-//                  ]};
-//<!--    doWork(data)-->
-//};
 
 function doWork(data) {
     $.ajaxSetup({
@@ -56,12 +35,20 @@ function doWork(data) {
     });
 	var url = "https://reg.pryv.me/access"
 	// ajax the JSON to the server
-	$.post(url, JSON.stringify(data), function(d, status){
-       url=d['url'];
- 	   start_polling(d['poll']);
-       $("#sign_in").append("<button onclick=window.open('"+url+"','popup','width=600,height=600'); return false;> Open Link in Popup </button>");
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        success: function (resp) {
+           url=resp['url'];
+           start_polling(resp['poll']);
+           //generate link
+           $("#sign_in").append("<a href=/?reqPermissions="+JSON.stringify(data)+"&expertToken="+expertToken+">Link to send to patients</a>");
+//           $("#sign_in").append("<button onclick=window.open('"+url+"','popup','width=600,height=600'); return false;> Open Link in Popup </button>");
+        }
+    });
 
-	});
 	// stop link reloading the page
  event.preventDefault();
 }

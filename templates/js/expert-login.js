@@ -11,7 +11,6 @@ $("#login-button").click(function(){
 function auth_login(app_id, username, password){
     $.ajaxSetup({
       contentType: "application/json; charset=utf-8"
-<!--      headers : {'Origin':'https://'+app_id+'.pryv.me'}-->
     });
 
     url = "https://"+username+".pryv.me/auth/login";
@@ -38,7 +37,6 @@ function auth_login(app_id, username, password){
             "<p><button id='create-stream-access'>Create stream and access</button></p>"
             );
             $("#create-stream-access").click(function(){
-                alert('clicked');
                 stream = $('#patients-stream').val();
                 create_stream_access(username, stream, token);
             });
@@ -81,7 +79,8 @@ function create_access(username, data, token){
         headers: {"authorization": token},
         dataType: 'json',
         success: function (data) {
-            location.href = "index_permissions.html";
+//            location.href = "/index_permissions/?expertToken="+token+".html";
+            window.location.href = "/request_permissions.html?expertToken="+token;
         }
     });
 }
