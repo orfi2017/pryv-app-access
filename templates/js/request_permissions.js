@@ -16,16 +16,18 @@ $(function() {
         }
       ]
 
+    var default_semantics = ['Heart', 'Weight', 'SNOMED-CT1298']
+
     $("#requestingAppId").val(JSON.stringify(default_app_id));
 
-    $("#permissionsArea").val(JSON.stringify(default_permissions_data));
+    $("#permissionsArea").val(JSON.stringify(default_semantics));
 
     $("#request-access").click(function(){
         app_id = $("#requestingAppId").val();
         permissions_data = $("#permissionsArea").val();
         console.log(app_id);
         data = {"requestingAppId":JSON.parse(app_id), "requestedPermissions":JSON.parse(permissions_data)}
-        doWork(data) ;
+        doWork(data);
     });
 });
 
@@ -41,10 +43,10 @@ function doWork(data) {
         data: JSON.stringify(data),
         dataType: 'json',
         success: function (resp) {
+           $("#sign_in").append("<a href=/patient_app.html?reqPermissions="+JSON.stringify(data)+"&expertToken="+expertToken+">Link to send to patients</a>");
            url=resp['url'];
-           start_polling(resp['poll']);
+//           start_polling(resp['poll']);
            //generate link
-           $("#sign_in").append("<a href=/?reqPermissions="+JSON.stringify(data)+"&expertToken="+expertToken+">Link to send to patients</a>");
 //           $("#sign_in").append("<button onclick=window.open('"+url+"','popup','width=600,height=600'); return false;> Open Link in Popup </button>");
         }
     });
