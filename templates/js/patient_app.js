@@ -58,7 +58,9 @@ function start_polling(poll_url){
                 console.log(typeof data, data);
                 window.clearInterval(intervalID);
                 console.log("post request");
-                search_for_semantics(requested_semantics);
+                streams = get_streams_for_user(username, token)
+                console.log(streams)
+//                search_for_semantics(requested_semantics);
 //                $.post("https://0.0.0.0:8000/access", JSON.stringify(data), function(d,status){
 //                    console.log(status);
 //                })
@@ -68,3 +70,18 @@ function start_polling(poll_url){
 }
 
 //    re=requests.get(url="https://orfeas.pryv.me/streams",params={"auth":"cjzy2ioal04xj0e40zdcy4sku"})
+function get_streams_for_user(username, token){
+	var url = "https://"+username+".pryv.me/streams"
+	// ajax the JSON to the server
+    $.ajax({
+        url: url,
+        type: 'get',
+        data: {"auth" : token},
+        dataType: 'json',
+        success: function (resp) {
+            console.log(resp);
+        }
+    });
+}
+
+
