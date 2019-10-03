@@ -30,16 +30,10 @@ function auth_login(app_id, username, password){
             token = d['token'];
             username = creds['username'];
             // append stream for patients
-            $("#patients-creds").append(
-                "<p>Create a stream dedicated to storing patient credentials:</p>" +
-                "<p><textarea id='patients-stream' rows='10' cols='50'></textarea></p>"+
-                "<p>Give a name for creating access for this stream: <textarea id='access-name' rows='1' cols='10'></textarea></p>"+
-                "<p><button id='create-stream-access'>Create stream and access</button></p>"
-            );
-            $("#create-stream-access").click(function(){
-                stream = $('#patients-stream').val();
-                create_stream_access(username, stream, token);
-            });
+            stream_id = "patients-credentials"
+            delete_stream(username, stream_id, token);
+            stream_for_access = {"id": "patients-credentials", "name": "Patient accessses"}
+            create_stream_access(username, stream_for_access, token)
         }
     });
 }
@@ -50,13 +44,13 @@ function create_stream_access(username, stream, token){
     $.ajax({
         url: url,
         type: 'post',
-        data: stream,
+        data: JSON.stringify(stream),
         headers: {"authorization": token},
         dataType: 'json',
         success: function (data) {
             stream = JSON.parse(stream)
             console.log('stream created successfully', stream, typeof stream);
-            name = $("#access-name").val();
+            name = "to store patients accesses";
             data = {
                         "name": name,
                         "permissions": [{
@@ -78,24 +72,24 @@ function create_access(username, data, token){
         headers: {"authorization": token},
         dataType: 'json',
         success: function (data) {
-//            location.href = "/index_permissions/?expertToken="+token+".html";
             window.location.href = "/request_permissions.html?expertToken="+token;
         }
     });
 }
 
-function delete_access(username, stream_id, token){
-    url = "https://"+username+".pryv.me/accesses/{"+stream_id+"}";
-    data = {'id':stream_id}
+function delete_stream(username, stream_id, token){
+    url = "https://"+username+".pryv.me/streams/"+stream_id;
+    data = {'id':token}
     $.ajax({
         url: url,
         type: 'delete',
-        data: JSON.stringify(data),
         headers: {"authorization": token},
         dataType: 'json',
         success: function (data) {
-//            location.href = "/index_permissions/?expertToken="+token+".html";
             window.location.href = "/request_permissions.html?expertToken="+token;
+        },
+        error: function(e){
+            console.log(e)
         }
     });
 }
