@@ -1,12 +1,12 @@
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/request_permissions.js"></script>
+    <script type="text/javascript" src="/js/request_semantics.js"></script>
 </head>
 <body>
 <div align="center">
-    <p><b>Setup permissions required from patient</b></p>
-    <p>Enter permissions that you wish to request from patients:</p>
+    <p><b>Setup semantics required from patient</b></p>
+    <p>Enter semantics that you wish to request from patients:</p>
 </div>
 <table align="center">
         <tbody>
@@ -16,7 +16,7 @@
         </tr>
         <tr>
             <td class="leftColumn">
-                <p><b>Permissions</b> (See <a href="http://api.pryv.com/reference/#authorizing-your-app" target="_blank">API doc</a>)</p>
+                <p><b>Requested semantics</b> (See <a href="http://api.pryv.com/reference/#authorizing-your-app" target="_blank">API doc</a>)</p>
             </td>
             <td class="rightColumn">
                 <div id="permissionsViewInactive" style="display: none;"></div>
@@ -25,7 +25,11 @@
                 </div>
             </td>
         </tr>
-
+        <tr>
+            <td class="leftColumn"><p>Terms of use</p></td>
+            <td class="rightColumn"><input id="pryv_terms_of_use" type="text" value="TERMS-OF-USE">
+            </td>
+        </tr>
         <tr style="display: none;">
             <td class="leftColumn">
                 <p><b>Authorization popup</b></p>
@@ -57,7 +61,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input id="request-access" type="submit" value="Request Access">
+                <input id="generate-link" type="submit" value="Generate link for patients">
             </td>
         </tr>
 </tbody></table>
@@ -65,7 +69,7 @@
 <!--    <textarea id="permissionsArea"></textarea>-->
 <!--</div>-->
 <!--<button id="theButton">Request access</button>-->
-<div id="sign_in" align="center">
+<div id="link_area" align="center">
 </div>
 </body>
 </html>

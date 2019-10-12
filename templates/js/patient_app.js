@@ -1,10 +1,23 @@
 $(function(){
     url = decodeURIComponent(window.location.href);
     url_params = url.split('?')[1].split('&')
-    requested_permissions = JSON.parse(url_params[0].split('=')[1])
-    req_app_id = requested_permissions.requestingAppId
-    requested_semantics = JSON.parse(url_params[0].split('=')[1]).requestedPermissions
-    console.log(req_app_id);
+    requested_permissions = url_params[0].split('=')[1];
+//    var i;
+//    for (i=0; i<url_params.length; i++){
+//        concept = url_params[0].split('=')[1];
+//        level = url_params[1].split('=')[1];
+//    }
+//    console.log('url params',url_params);
+    console.log('permissions: ',requested_permissions);
+    request_access(JSON.parse(requested_permissions));
+//    requested_permissions = JSON.parse(url_params[0].split('=')[1])
+//    url_params = JSON.parse(url_params[0].split('=')[1])
+//    requested_semantics = url_params.requestedPermissions;
+//    req_app_id = url_params.requestingAppId
+//    console.log('url params',url_params);
+//    console.log('semantics',req_app_id);
+//    console.log('semantics', requested_semantics);
+
 //    streams = search_for_semantics(requested_semantics);
 //    root_permissions = {"requestingAppId" : req_app_id,
 //                        "requestedPermissions" :
@@ -61,9 +74,9 @@ function start_polling(poll_url){
                 console.log("post request");
                 streams = get_streams_for_user(username, token)
                 search_for_semantics(requested_semantics, streams);
-                $.post("https://0.0.0.0:8000/access", JSON.stringify(data), function(d,status){
-                    console.log(status);
-                })
+//                $.post("https://0.0.0.0:8000/access", JSON.stringify(data), function(d,status){
+//                    console.log(status);
+//                })
             }
         });
     },5000);

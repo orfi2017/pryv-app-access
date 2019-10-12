@@ -16,7 +16,7 @@ CORS(app)
 def main():
     # serve index template
     return render_template('index.html')
-    # return render_template('request_permissions.html')
+    # return render_template('request_semantics.html')
 
 
 @app.route('/access', methods=['POST'])
