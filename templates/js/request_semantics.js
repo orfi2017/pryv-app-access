@@ -8,16 +8,13 @@ $(function() {
     console.log(data_for_batch_call);
 
     batch_call(expertUsername, expertToken, data_for_batch_call);
-//    var data_for_create_access = create_access_data();
-//    create_access(username, token, data_for_create_access);
+    var data_for_create_access = create_access_data();
+    create_access(expertUsername, expertToken, data_for_create_access);
 
     var default_app_id = "test-app-id"
     url = window.location.href;
     url_splitted = url.split('?')
     expertToken = url_splitted[1].split('=')[1];
-    var default_semantics = ['Heart', 'Weight', 'SNOMED-CT1298']
-    $("#requestingAppId").val(JSON.stringify(default_app_id));
-    $("#permissionsArea").val(JSON.stringify(default_semantics));
 
     $("#generate-link").click(function(){
         app_id = $("#requestingAppId").val();
@@ -137,6 +134,7 @@ function create_access(username, token, data){
         },
         error: function(e){
             if(e['status']==400){
+            console.log('access has been already created for token', token);
 //                window.location.href = "/request_semantics.html?expertToken="+token;
             }
         }
