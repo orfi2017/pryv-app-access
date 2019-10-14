@@ -1,15 +1,26 @@
 $(function(){
     url = decodeURIComponent(window.location.href);
-    url_params = url.split('?')[1].split('&')
-    requested_permissions = url_params[0].split('=')[1];
+    url_params = url.split('?')[1].split('&');
+    expert_url = url_params[0].split('=')[1];
+    campaignId = url_params[1].split('=')[1];
+    expertToken = url_params[2].split('=')[1];
+    console.log(expert_url, expertToken, campaignId);
+
+
+
+
+
+
+
+//    requested_permissions = url_params[0].split('=')[1];
 //    var i;
 //    for (i=0; i<url_params.length; i++){
 //        concept = url_params[0].split('=')[1];
 //        level = url_params[1].split('=')[1];
 //    }
 //    console.log('url params',url_params);
-    console.log('permissions: ',requested_permissions);
-    request_access(JSON.parse(requested_permissions));
+//    console.log('permissions: ',requested_permissions);
+//    request_access(JSON.parse(requested_permissions));
 //    requested_permissions = JSON.parse(url_params[0].split('=')[1])
 //    url_params = JSON.parse(url_params[0].split('=')[1])
 //    requested_semantics = url_params.requestedPermissions;
@@ -27,7 +38,7 @@ $(function(){
 //                                "defaultName": "SemPryv"
 //                            }]
 //                        }
-    request_access(root_permissions)
+//    request_access(root_permissions)
 });
 
 function search_for_semantics(requested_semantics, streams) {
@@ -98,5 +109,4 @@ function get_streams_for_user(username, token){
         }
     });
 }
-
 
