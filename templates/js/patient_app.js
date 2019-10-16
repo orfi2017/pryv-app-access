@@ -6,11 +6,7 @@ $(function(){
     expertToken = url_params[2].split('=')[1];
     console.log(expert_url, expertToken, campaignId);
 
-
-
-
-
-
+    get_event_one_call(expert_url, expertToken, campaignId);
 
 //    requested_permissions = url_params[0].split('=')[1];
 //    var i;
@@ -41,6 +37,42 @@ $(function(){
 //    request_access(root_permissions)
 });
 
+function get_event_one_call(url, token, event_id){
+    $.ajaxSetup({
+      contentType: "application/json; charset=utf-8"
+    });
+    var url = 'https://'+url+'/events/'+event_id;
+    $.ajax({
+        url: url,
+        type: 'get',
+//        data: JSON.stringify(data),
+        headers: {"authorization": token},
+        dataType: 'json',
+        success: function (resp) {
+            requestedPermissions = resp['event']['content']['requestedPermissions'];
+            appId = resp['event']['content']['appId'];
+            consentText = resp['event']['content']['consentText'];
+            console.log(requestedPermissions['requestedPermissions'], appId, consentText);
+            data_for_request_access =
+            {
+                'requestingAppId': appId,
+                'requestedPermissions':requestedPermissions['requestedPermissions'],
+                "clientData":
+                {
+                    "app-web-auth:description":
+                    {
+                        "type": "note/txt",
+                        "content": consentText // consent text retrieved from
+                    }
+                }
+            }
+            console.log(JSON.stringify(data_for_request_access));
+            request_access(data_for_request_access);
+        }
+    });
+
+}
+
 function search_for_semantics(requested_semantics, streams) {
         console.log(typeof streams)
         for (i=0; i<streams.length; i++){
@@ -64,12 +96,13 @@ function request_access(data) {
         success: function (resp) {
            url=resp['url'];
            start_polling(resp['poll']);
+           console.log(url)
            window.open(url,'popup','width=600,height=600');
         }
     });
 
 	// stop link reloading the page
- event.preventDefault();
+// event.preventDefault();
 }
 
 function start_polling(poll_url){
@@ -82,6 +115,7 @@ function start_polling(poll_url){
                 var token = d['token'];
                 data = {"username":d['username'],"token" : d['token']};
                 window.clearInterval(intervalID);
+
                 console.log("post request");
                 streams = get_streams_for_user(username, token)
                 search_for_semantics(requested_semantics, streams);

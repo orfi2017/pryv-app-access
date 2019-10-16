@@ -6,18 +6,37 @@ $(function() {
     console.log(expertUsername, expertToken);
     var data_for_batch_call = create_batch_call_data();
     console.log(data_for_batch_call);
-    default_semantics = ['Heart','Weight'];
-    $("#permissionsArea").val(JSON.stringify(default_semantics));
     batch_call(expertUsername, expertToken, data_for_batch_call);
     var data_for_create_access = create_access_data();
     create_access(expertUsername, expertToken, data_for_create_access);
 
     app_id = $("#requestingAppId").val();
     consentText = 'https://pryv.com/terms-of-use/';
-    request_semantics = JSON.parse($("#permissionsArea").val());
-    var permissions_data = create_permissions_data(request_semantics);
+//    request_semantics = JSON.parse($("#permissionsArea").val());
+
+    default_permissions = [
+                {
+                    "streamId": "heart",
+                    "level": "read"
+                },
+                {
+                     "streamId": "diary",
+                     "level": "read",
+                     "defaultName": "Journal"
+                 },
+                 {
+                     "streamId": "position",
+                     "level": "contribute",
+                     "defaultName": "Position"
+                 }
+          ]
+//    default_semantics = ['Heart','Weight'];
+    $("#permissionsArea").val(JSON.stringify(default_permissions));
+//    permissions_data = $("#permissionsArea").val();
+    permissions_data = default_permissions;
     event_data = create_event_data(permissions_data, consentText, app_id);
     create_event(expertUsername, expertToken, event_data);
+
 });
 
 function parse_username_token_from_url(url){
@@ -70,6 +89,27 @@ function create_access_data(){
             }
 }
 
+function create_permissions_data(){
+    return [
+                {
+                    "streamId": "heart",
+                    "level": "read"
+                },
+                {
+                     "streamId": "diary",
+                     "level": "read",
+                     "defaultName": "Journal"
+                 },
+                 {
+                     "streamId": "position",
+                     "level": "contribute",
+                     "defaultName": "Position"
+                 }
+          ];
+}
+
+
+
 function batch_call(username, token, data){
     $.ajaxSetup({
       contentType: "application/json; charset=utf-8"
@@ -87,30 +127,6 @@ function batch_call(username, token, data){
     });
 }
 
-function create_permissions_data(request_semantics){
-    var permissions_data = {
-            "requestedPermissions": [
-                {
-                    "streamId": "heart",
-                    "level": "read"
-                }
-            ]
-        };
-
-    var i=0;
-    for(i=0;i<request_semantics.length;i++){
-        permissions_data["requestedPermissions"].push(
-                  {
-                    "concept": {
-                                    "type": "keyword",
-                                    "value": request_semantics[i]
-                                },
-                    "level": "read"
-                  }
-        );
-    }
-    return permissions_data;
-}
 
 function create_access(username, token, data){
     url = "https://"+username+".pryv.me/accesses";
@@ -159,7 +175,7 @@ function create_event(username, token, data){
             console.log('response event id', data['event']['id']);
             event_id = data['event']['id'];
             $("#generate-link").click(function(){
-                link_text = '/patient_app.html?url='+expertUsername+".pryv.hevs.ch&eventId="+event_id+"&expertToken="+expertToken;
+                link_text = '/patient_app.html?url='+expertUsername+".pryv.me&eventId="+event_id+"&expertToken="+expertToken;
                 $("#link_area").append("<a href="+link_text+">Link for patients</a>");
             });
         }
@@ -167,3 +183,29 @@ function create_event(username, token, data){
 }
 
 
+
+
+//function create_permissions_data(request_semantics){
+//    var permissions_data = {
+//            "requestedPermissions": [
+//                {
+//                    "streamId": "heart",
+//                    "level": "read"
+//                }
+//            ]
+//        };
+//
+//    var i=0;
+//    for(i=0;i<request_semantics.length;i++){
+//        permissions_data["requestedPermissions"].push(
+//                  {
+//                    "concept": {
+//                                    "type": "keyword",
+//                                    "value": request_semantics[i]
+//                                },
+//                    "level": "read"
+//                  }
+//        );
+//    }
+//    return permissions_data;
+//}
