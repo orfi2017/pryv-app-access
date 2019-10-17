@@ -52,11 +52,10 @@ function get_event_one_call(url, token, event_id){
             requestedPermissions = resp['event']['content']['requestedPermissions'];
             appId = resp['event']['content']['appId'];
             consentText = resp['event']['content']['consentText'];
-            console.log(requestedPermissions['requestedPermissions'], appId, consentText);
             data_for_request_access =
             {
                 'requestingAppId': appId,
-                'requestedPermissions':requestedPermissions['requestedPermissions'],
+                'requestedPermissions':requestedPermissions,
                 "clientData":
                 {
                     "app-web-auth:description":
@@ -66,7 +65,7 @@ function get_event_one_call(url, token, event_id){
                     }
                 }
             }
-            console.log(JSON.stringify(data_for_request_access));
+            console.log('data for create access: ',JSON.stringify(data_for_request_access));
             request_access(data_for_request_access);
         }
     });
@@ -96,8 +95,11 @@ function request_access(data) {
         success: function (resp) {
            url=resp['url'];
            start_polling(resp['poll']);
-           console.log(url)
-           window.open(url,'popup','width=600,height=600');
+           var width = 600;
+           var height = 600;
+           var top = screen.width/2;
+           var left = screen.height/2;
+           window.open(url,'popup','width='+width+',height='+height+', top='+top+', left='+left);
         }
     });
 
@@ -111,17 +113,15 @@ function start_polling(poll_url){
         $.get(poll_url, function(d, status){
             console.log(d['status']);
             if (d['code'] == 200) {
-                var username = d['username'];
-                var token = d['token'];
+                console.log('expert url', expert_url)
+                var patientUsername = d['username'];
+                var patientToken = d['token'];
                 data = {"username":d['username'],"token" : d['token']};
                 window.clearInterval(intervalID);
-
+                store_patient_access(patientUsername, patientToken)
                 console.log("post request");
-                streams = get_streams_for_user(username, token)
-                search_for_semantics(requested_semantics, streams);
-//                $.post("https://0.0.0.0:8000/access", JSON.stringify(data), function(d,status){
-//                    console.log(status);
-//                })
+//                streams = get_streams_for_user(username, token)
+//                search_for_semantics(requested_semantics, streams);
             }
         });
     },5000);
@@ -140,6 +140,38 @@ function get_streams_for_user(username, token){
         dataType: 'json',
         success: function (resp) {
             return resp.streams;
+        }
+    });
+}
+
+function store_patient_access(expertToken, patientUsername, patientToken, permissions){
+
+    console.log('create event', patientUsername, patientToken);
+    //create event
+    url = "https://"+expert_url+"/events";
+    data = {
+        "streamId": "expert-access-stream",
+        "type": "access/pryv",
+        "content": {
+            "access": {
+                "username" : patientUsername,
+                "token" : patientToken,
+                "type" : "shared",
+                "name" : "For colleagues",
+                "permissions" : permissions,
+                "urlEndpoint" : patientUsername+"."
+
+            }
+        }
+    };
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: JSON.stringify(data),
+        headers: {"authorization": expertToken},
+        dataType: 'json',
+        success: function (data) {
+            $('#success_message').append('<p>patient credentials were saved successfully</p>')
         }
     });
 }

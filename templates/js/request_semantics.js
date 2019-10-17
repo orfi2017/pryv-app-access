@@ -1,9 +1,9 @@
 $(function() {
     url = window.location.href;
-    arr = parse_username_token_from_url(url);
-    expertUsername = arr[0];
-    expertToken = arr[1];
-    console.log(expertUsername, expertToken);
+    url_params = parse_username_token_from_url(url);
+    expertUsername = url_params[0];
+    expertToken = url_params[1];
+    console.log('username: ',expertUsername, 'token: ', expertToken);
     var data_for_batch_call = create_batch_call_data();
     console.log(data_for_batch_call);
     batch_call(expertUsername, expertToken, data_for_batch_call);
@@ -13,35 +13,18 @@ $(function() {
     app_id = $("#requestingAppId").val();
     consentText = 'https://pryv.com/terms-of-use/';
 //    request_semantics = JSON.parse($("#permissionsArea").val());
-
-    default_permissions = [
-                {
-                    "streamId": "heart",
-                    "level": "read"
-                },
-                {
-                     "streamId": "diary",
-                     "level": "read",
-                     "defaultName": "Journal"
-                 },
-                 {
-                     "streamId": "position",
-                     "level": "contribute",
-                     "defaultName": "Position"
-                 }
-          ]
+    default_permissions = create_permissions_data();
 //    default_semantics = ['Heart','Weight'];
     $("#permissionsArea").val(JSON.stringify(default_permissions));
-//    permissions_data = $("#permissionsArea").val();
-    permissions_data = default_permissions;
+    permissions_data = JSON.parse($("#permissionsArea").val());
+//    permissions_data = default_permissions;
     event_data = create_event_data(permissions_data, consentText, app_id);
     create_event(expertUsername, expertToken, event_data);
-
 });
 
 function parse_username_token_from_url(url){
-    url_splitted = url.split('?')
-    url_params = url_splitted[1].split('&');
+    var url_splitted = url.split('?')
+    var url_params = url_splitted[1].split('&');
     expertUsername = url_params[0].split('=')[1];
     expertToken = url_params[1].split('=')[1];
     return [expertUsername, expertToken]
@@ -93,7 +76,8 @@ function create_permissions_data(){
     return [
                 {
                     "streamId": "heart",
-                    "level": "read"
+                    "level": "read",
+                    "defaultName": "Heart"
                 },
                 {
                      "streamId": "diary",
