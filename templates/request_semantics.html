@@ -2,74 +2,36 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="/js/request_semantics.js"></script>
+    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<div align="center">
-    <p><b>Setup semantics required from patient</b></p>
-    <p>Enter semantics that you wish to request from patients:</p>
-</div>
-<table align="center">
-        <tbody>
-        <tr>
-            <td class="leftColumn"><p><b>Application ID</b> (min length: 6)</p></td>
-            <td class="rightColumn"><input id="requestingAppId" type="text" value="app-web-access-test"></td>
-        </tr>
-        <tr>
-            <td class="leftColumn">
-                <p><b>Requested semantics</b> (See <a href="http://api.pryv.com/reference/#authorizing-your-app" target="_blank">API doc</a>)</p>
-            </td>
-            <td class="rightColumn">
-                <div id="permissionsViewInactive" style="display: none;"></div>
-                <div id="permissionsViewActive">
-                    <textarea id="permissionsArea" rows="10" cols="50"></textarea>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="leftColumn"><p>Terms of use</p></td>
-            <td class="rightColumn"><input id="pryv_terms_of_use" type="text" value="TERMS-OF-USE">
-            </td>
-        </tr>
-        <tr style="display: none;">
-            <td class="leftColumn">
-                <p><b>Authorization popup</b></p>
-                    <input type="checkbox" name="localAuth" id="localAuth">
-                    <label for="localAuth">Run on local web-auth (port 4443)</label>
-            </td>
-            <td class="rightColumn"><input name="reclaDevel" id="reclaDevel" type="text"></td>
-        </tr>
-        <tr style="display: none;">
-            <td class="leftColumn"><p><b>Language</b></p></td>
-            <td class="rightColumn">
-                <select name="languageCode" id="languageCode">
-                <option value="default">Browser</option>
-                <option value="en">English</option>
-                <option value="fr">French</option> </select>
-            </td>
-        </tr>
-        <tr style="display: none;">
-            <td class="leftColumn">
-                <p><b>Return URL (postlogin url)</b></p>
-                <p>auto# by default</p>
-                <p>self# or other url to avoid popup</p>
-            </td>
-            <td class="rightColumn"><input id="returnURL" name="returnURL" type="text" value="auto#"></td>
-        </tr>
-        <tr style="display: none;">
-            <td class="leftColumn"><p><b>State to simulate oauth</b><br>(needs returnURL)</p></td>
-            <td class="rightColumn"><input id="oauthState" name="oauthState" type="text"></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input id="generate-link" type="submit" value="Generate link for patients">
-            </td>
-        </tr>
-</tbody></table>
-<!--<div id="permissionsViewActive">-->
-<!--    <textarea id="permissionsArea"></textarea>-->
-<!--</div>-->
-<!--<button id="theButton">Request access</button>-->
-<div id="link_area" align="center">
+<div class="back">
+    <div class="div-center">
+        <div class="content">
+            <p><b>Setup semantics required from patient</b></p>
+
+            <div class="form-group">
+                <label for="requestingAppId"><b>Application ID</b> (min length: 6)</label>
+                <input type="text" class="form-control" id="requestingAppId" value="app-web-access-test">
+            </div>
+
+            <p>Enter semantics that you wish to request from patients:</p>
+
+            <div class="form-group">
+                <label for="permissionsArea"><b>Requested semantics</b> (See <a href="http://api.pryv.com/reference/#authorizing-your-app" target="_blank">API doc</a>)</label>
+                <textarea id="permissionsArea" rows="10" cols="50"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="pryv_terms_of_use">Terms of use</label>
+                <input type="text" class="form-control" id="pryv_terms_of_use" value="TERMS-OF-USE"/>
+            </div>
+
+            <input id="generate-link" type="submit" value="Generate link for patients"/>
+
+            <div id="link_area" align="center"/>
+        </div>
+    </div>
 </div>
 </body>
 </html>
