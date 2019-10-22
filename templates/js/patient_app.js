@@ -38,6 +38,7 @@ $(function(){
 });
 
 function get_event_one_call(url, token, event_id){
+    console.log('get_event_one_call');
     $.ajaxSetup({
       contentType: "application/json; charset=utf-8"
     });
@@ -45,16 +46,14 @@ function get_event_one_call(url, token, event_id){
     $.ajax({
         url: url,
         type: 'get',
-//        data: JSON.stringify(data),
         headers: {"authorization": token},
         dataType: 'json',
         success: function (resp) {
             requestedPermissions = resp['event']['content']['requestedPermissions'];
-            appId = resp['event']['content']['appId'];
             consentText = resp['event']['content']['consentText'];
             data_for_request_access =
             {
-                'requestingAppId': appId,
+                'requestingAppId': event_id,
                 'requestedPermissions':requestedPermissions,
                 "clientData":
                 {
@@ -93,13 +92,14 @@ function request_access(data) {
         data: JSON.stringify(data),
         dataType: 'json',
         success: function (resp) {
-           url=resp['url'];
-           start_polling(resp['poll']);
-           var width = 600;
-           var height = 600;
-           var top = screen.width/2;
-           var left = screen.height/2;
-           window.open(url,'popup','width='+width+',height='+height+', top='+top+', left='+left);
+            console.log('success from request access')
+            url=resp['url'];
+            start_polling(resp['poll']);
+            var width = 600;
+            var height = 600;
+            var top = screen.width/2;
+            var left = screen.height/2;
+window.open(url,'popup','width='+width+',height='+height+', top='+top+', left='+left);
         }
     });
 

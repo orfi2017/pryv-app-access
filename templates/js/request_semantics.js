@@ -10,7 +10,6 @@ $(function() {
     var data_for_create_access = create_access_data();
     create_access(expertUsername, expertToken, data_for_create_access);
 
-    app_id = $("#requestingAppId").val();
     consentText = 'https://pryv.com/terms-of-use/';
 //    request_semantics = JSON.parse($("#permissionsArea").val());
     default_permissions = create_permissions_data();
@@ -18,8 +17,11 @@ $(function() {
     $("#permissionsArea").val(JSON.stringify(default_permissions));
     permissions_data = JSON.parse($("#permissionsArea").val());
 //    permissions_data = default_permissions;
-    event_data = create_event_data(permissions_data, consentText, app_id);
-    create_event(expertUsername, expertToken, event_data);
+    $("#generate-link").click(function(){
+        app_id = $("#requestingAppId").val();
+        event_data = create_event_data(permissions_data, consentText);
+        create_event(expertUsername, expertToken, event_data);
+    });
 });
 
 function parse_username_token_from_url(url){
@@ -158,10 +160,8 @@ function create_event(username, token, data){
         success: function (data) {
             console.log('response event id', data['event']['id']);
             event_id = data['event']['id'];
-            $("#generate-link").click(function(){
-                link_text = '/patient_app.html?url='+expertUsername+".pryv.me&eventId="+event_id+"&expertToken="+expertToken;
-                $("#link_area").append("<a href="+link_text+">Link for patients</a>");
-            });
+            link_text = '/patient_app.html?url='+expertUsername+".pryv.me&eventId="+event_id+"&expertToken="+expertToken;
+            $("#link_area").append("<a href="+link_text+">Link for patients</a>");
         }
     });
 }
