@@ -9,7 +9,6 @@ $(function() {
     batch_call(expertUsername, expertToken, data_for_batch_call);
     var data_for_create_access = create_access_data();
     create_access(expertUsername, expertToken, data_for_create_access);
-
     app_id = $("#requestingAppId").val();
     consentText = 'https://pryv.com/terms-of-use/';
 //    request_semantics = JSON.parse($("#permissionsArea").val());
@@ -160,7 +159,7 @@ function create_event(username, token, data){
             event_id = data['event']['id'];
             $("#generate-link").click(function(){
                 link_text = '/patient_app.html?url='+expertUsername+".pryv.me&eventId="+event_id+"&expertToken="+expertToken;
-                $("#link_area").append("<a href="+link_text+">Link for patients</a>");
+                $("#link_area").html("<a href="+link_text+">Link for patients</a>");
             });
         }
     });
