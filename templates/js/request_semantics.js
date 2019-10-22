@@ -18,9 +18,15 @@ $(function() {
     permissions_data = JSON.parse($("#permissionsArea").val());
 //    permissions_data = default_permissions;
     $("#generate-link").click(function(){
-        app_id = $("#requestingAppId").val();
-        event_data = create_event_data(permissions_data, consentText);
-        create_event(expertUsername, expertToken, event_data);
+        if ($('#agree_checkbox').is(':checked')){
+            app_id = $("#requestingAppId").val();
+            event_data = create_event_data(permissions_data, consentText);
+            create_event(expertUsername, expertToken, event_data);
+        }
+        else {
+            alert('Please indicate that you have read and agree to the Terms and Conditions');
+        }
+
     });
 });
 

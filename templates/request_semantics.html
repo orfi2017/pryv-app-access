@@ -1,4 +1,4 @@
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="/js/request_semantics.js"></script>
@@ -23,13 +23,13 @@
                 <textarea id="permissionsArea" rows="10" cols="50"></textarea>
             </div>
             <div class="form-group">
-                <label for="pryv_terms_of_use">Terms of use</label>
-                <input type="text" class="form-control" id="pryv_terms_of_use" value="TERMS-OF-USE"/>
+                <a href="https://pryv.com/terms-of-use/">Pryv's Terms of use</a>
             </div>
 
-            <input id="generate-link" type="submit" value="Generate link for patients"/>
-
-            <div id="link_area" align="center"/>
+            <input type="checkbox" name="checkbox" value="check" id="agree_checkbox" /> I have read and agree to the Terms and Conditions of Pryv
+            <br/>
+            <input id="generate-link" align="center" type="submit" value="Generate link for patients"/>
+            <div id="link_area" align="center"></div>
         </div>
     </div>
 </div>
