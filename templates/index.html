@@ -5,24 +5,31 @@
     <title>Title</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="/js/expert-login.js"></script>
+    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<table align="center">
-        <tbody>
-        <tr>
-            <td class="leftColumn"><p><b>Expert username</b></p></td>
-            <td class="rightColumn"><input id="expert-username"></td>
-        </tr>
-        <tr>
-            <td class="leftColumn"><p><b>Expert password</b></p></td>
-            <td class="rightColumn"><input id="expert-password" type="password"></td>
-        </tr>
-        <tr>
-            <td class="leftColumn"><p><b>Application ID: </b></p></td>
-            <td class="rightColumn"><input id="app-id" type="text"></td>
-        </tr>
-        </tbody>
-</table>
-<div id="patients-creds" align="center"><button id="login-button">Login</button></div>
+<div class="back">
+    <div class="div-center">
+        <div class="content">
+            <h3>Expert login</h3>
+            <hr/>
+            <div class="form-group">
+                <label for="expert-username">Username</label>
+                <input type="text" class="form-control" id="expert-username">
+            </div>
+            <div class="form-group">
+                <label for="expert-password">Password</label>
+                <input type="password" class="form-control" id="expert-password" required>
+            </div>
+            <div class="form-group">
+                <label for="app-id">App-ID</label>
+                <input type="text" class="form-control" id="app-id" required>
+            </div>
+            <div id="patients-creds" align="center"><button class="btn btn-primary btn-block" id="login-button">Login</button></div>
+            <hr/>
+        </div>
+    </div>
+</div>
 </body>
 </html>
