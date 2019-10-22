@@ -160,7 +160,6 @@ function store_patient_access(expertToken, patientUsername, patientToken, permis
                 "name" : "For colleagues",
                 "permissions" : permissions,
                 "urlEndpoint" : patientUsername+"."
-
             }
         }
     };
