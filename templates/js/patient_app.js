@@ -145,7 +145,7 @@ function get_streams_for_user(username, token){
 }
 
 function store_patient_access(expertToken, patientUsername, patientToken, permissions){
-
+    $('#success_message').append('<p>patient credentials were saved successfully</p>');
     console.log('create event', patientUsername, patientToken);
     //create event
     url = "https://"+expert_url+"/events";
@@ -170,7 +170,7 @@ function store_patient_access(expertToken, patientUsername, patientToken, permis
         headers: {"authorization": expertToken},
         dataType: 'json',
         success: function (data) {
-            $('#success_message').append('<p>patient credentials were saved successfully</p>')
+            $('#success_message').append('<p>patient credentials were saved successfully</p>');
         }
     });
 }
