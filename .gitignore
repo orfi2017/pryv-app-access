@@ -1,3 +1,5 @@
 venv/
 draft.py
 js/*
+/.idea/
+/node_modules/

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Patient app</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="/js/patient_app.js"></script>
     <link href="style.css" rel="stylesheet">
@@ -10,14 +10,50 @@
 
 </head>
 <body>
+<div class="topnav">
+    <a>Pryv App</a>
+</div>
 <div class="back">
     <div class="div-center">
         <div class="content">
-            <p><b>Patient app</b></p>
-            <p>This app is for requesting access to specific streams</p>
+            <h4 id="requestingAppId"></h4>
+            <hr/>
             <div id="success_message" align="center"></div>
+            <table style="width:100%">
+                <tr>
+                    <th>Expert :</th>
+                    <td id="requestExpert"></td>
+                </tr>
+            </table>
+            <hr/>
+            <table id="requestedPermissions"style="width:100%">
+                <tr>
+                    <th>Stream ID</th>
+                    <th>Level</th>
+                    <th>Default name</th>
+                </tr>
+            </table>
+            <hr/>
+
+            <td colspan="2">
+                <center>
+                    <div id="successMsg"></div>
+                    <div id="spinner" class="spinner-border text-danger" role="status" style="display: none">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </center>
+            </td>
+            <td colspan="2">
+                <center>
+                    <button id="signin_button" class="pryv-access-btn">Y | Sign In</button>
+                    <p id=""></p>
+                </center>
+            </td>
         </div>
     </div>
+</div>
+<div class="footer">
+    <a>© 2019 Hes-so</a>
 </div>
 </body>
 </html>

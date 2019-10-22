@@ -1,3 +1,6 @@
+var data_for_request = null;
+var expert_url = null;
+
 $(function(){
     url = decodeURIComponent(window.location.href);
     url_params = url.split('?')[1].split('&');
@@ -5,8 +8,13 @@ $(function(){
     campaignId = url_params[1].split('=')[1];
     expertToken = url_params[2].split('=')[1];
     console.log(expert_url, expertToken, campaignId);
-
     get_event_one_call(expert_url, expertToken, campaignId);
+    $("#requestExpert").html(expert_url.split('.')[0]);
+    $("#signin_button").click(function(){
+        $("#spinner").show();
+        $("#signin_button").hide();
+       request_access(data_for_request);
+    });
 
 //    requested_permissions = url_params[0].split('=')[1];
 //    var i;
@@ -65,7 +73,13 @@ function get_event_one_call(url, token, event_id){
                 }
             }
             console.log('data for create access: ',JSON.stringify(data_for_request_access));
-            request_access(data_for_request_access);
+            $("#requestingAppId").html(data_for_request_access.requestingAppId);
+            data_for_request_access.requestedPermissions.forEach(function (element) {
+                let permission = "<tr><td>"+element.streamId+"</td><td>"+element.level+"</td><td>"+element.defaultName+"</td></tr>"
+                $("#requestedPermissions").append(permission);
+            });
+
+            data_for_request = data_for_request_access;
         }
     });
 
@@ -122,6 +136,10 @@ function start_polling(poll_url){
                 console.log("post request");
 //                streams = get_streams_for_user(username, token)
 //                search_for_semantics(requested_semantics, streams);
+                $("#spinner").hide();
+                $("#successMsg").html("Patient credentials for "+ d['username'] +" were saved successfully in "+ expert_url.split('.')[0] +" account");
+
+
             }
         });
     },5000);
