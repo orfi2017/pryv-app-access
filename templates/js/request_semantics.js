@@ -18,15 +18,10 @@ $(function() {
     permissions_data = JSON.parse($("#permissionsArea").val());
 //    permissions_data = default_permissions;
     $("#generate-link").click(function(){
-        if ($('#agree_checkbox').is(':checked')){
-            app_id = $("#requestingAppId").val();
-            event_data = create_event_data(permissions_data, consentText);
-            create_event(expertUsername, expertToken, event_data);
-        }
-        else {
-            alert('Please indicate that you have read and agree to the Terms and Conditions');
-        }
-
+        campaign_name = $("#requestingCampName").val();
+        app_id = 'pra-'+campaign_name;
+        event_data = create_event_data(permissions_data, consentText, app_id);
+        create_event(expertUsername, expertToken, event_data);
     });
 });
 
@@ -100,8 +95,6 @@ function create_permissions_data(){
           ];
 }
 
-
-
 function batch_call(username, token, data){
     $.ajaxSetup({
       contentType: "application/json; charset=utf-8"
@@ -118,7 +111,6 @@ function batch_call(username, token, data){
         }
     });
 }
-
 
 function create_access(username, token, data){
     url = "https://"+username+".pryv.me/accesses";
@@ -166,36 +158,9 @@ function create_event(username, token, data){
         success: function (data) {
             console.log('response event id', data['event']['id']);
             event_id = data['event']['id'];
-            link_text = '/patient_app.html?url='+expertUsername+".pryv.me&eventId="+event_id+"&expertToken="+expertToken;
+            link_text = "/patient_app.html?url="+expertUsername+".pryv.me&eventId="+event_id+"&expertToken="+expertToken +
+                        "&app_id="+app_id;
             $("#link_area").append("<a href="+link_text+">Link for patients</a>");
         }
     });
 }
-
-
-
-
-//function create_permissions_data(request_semantics){
-//    var permissions_data = {
-//            "requestedPermissions": [
-//                {
-//                    "streamId": "heart",
-//                    "level": "read"
-//                }
-//            ]
-//        };
-//
-//    var i=0;
-//    for(i=0;i<request_semantics.length;i++){
-//        permissions_data["requestedPermissions"].push(
-//                  {
-//                    "concept": {
-//                                    "type": "keyword",
-//                                    "value": request_semantics[i]
-//                                },
-//                    "level": "read"
-//                  }
-//        );
-//    }
-//    return permissions_data;
-//}

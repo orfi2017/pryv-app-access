@@ -15,29 +15,27 @@
             <p><b>Setup semantics required from patient</b></p>
 
             <div class="form-group">
-                <label for="requestingAppId"><b>Application ID</b> (min length: 6)</label>
-                <input type="text" class="form-control" id="requestingAppId" value="app-web-access-test">
+                <label for="requestingCampName"><b>Campaign Name</b> (min length: 6)</label>
+                <input type="text" class="form-control" id="requestingCampName" value="monitoring">
             </div>
 
             <p>Enter semantics that you wish to request from patients:</p>
 
             <div class="form-group">
                 <label for="permissionsArea"><b>Requested semantics</b> (See <a href="http://api.pryv.com/reference/#authorizing-your-app" target="_blank">API doc</a>)</label>
-                <textarea id="permissionsArea" rows="10" cols="50"></textarea>
+                <textarea id="permissionsArea" rows="5" cols="50"></textarea>
             </div>
             <div class="form-group">
-                <a href="https://pryv.com/terms-of-use/">Pryv's Terms of use</a>
+                <label for="termsOfUse"><b>Terms of use</b></label>
+                <textarea id="termsOfUse" rows="5" cols="50"></textarea>
             </div>
-
-            <input type="checkbox" name="checkbox" value="check" id="agree_checkbox" /> I have read and agree to the Terms and Conditions of Pryv
-            <br/>
             <input id="generate-link" align="center" type="submit" value="Generate link for patients"/>
             <div id="link_area" align="center"></div>
         </div>
     </div>
 </div>
 </body>
-<div class="footer">
-    <a>© 2019 Hes-so</a>
-</div>
+<!--<div class="footer">-->
+<!--    <a>© 2019 Hes-so</a>-->
+<!--</div>-->
 </html>

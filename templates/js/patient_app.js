@@ -7,45 +7,19 @@ $(function(){
     expert_url = url_params[0].split('=')[1];
     campaignId = url_params[1].split('=')[1];
     expertToken = url_params[2].split('=')[1];
-    console.log(expert_url, expertToken, campaignId);
-    get_event_one_call(expert_url, expertToken, campaignId);
+    appId = url_params[3].split('=')[1];
+
+    console.log(expert_url, expertToken, campaignId, appId);
+    get_event_one_call(expert_url, expertToken, campaignId, appId);
     $("#requestExpert").html(expert_url.split('.')[0]);
     $("#signin_button").click(function(){
         $("#spinner").show();
         $("#signin_button").hide();
        request_access(data_for_request);
     });
-
-//    requested_permissions = url_params[0].split('=')[1];
-//    var i;
-//    for (i=0; i<url_params.length; i++){
-//        concept = url_params[0].split('=')[1];
-//        level = url_params[1].split('=')[1];
-//    }
-//    console.log('url params',url_params);
-//    console.log('permissions: ',requested_permissions);
-//    request_access(JSON.parse(requested_permissions));
-//    requested_permissions = JSON.parse(url_params[0].split('=')[1])
-//    url_params = JSON.parse(url_params[0].split('=')[1])
-//    requested_semantics = url_params.requestedPermissions;
-//    req_app_id = url_params.requestingAppId
-//    console.log('url params',url_params);
-//    console.log('semantics',req_app_id);
-//    console.log('semantics', requested_semantics);
-
-//    streams = search_for_semantics(requested_semantics);
-//    root_permissions = {"requestingAppId" : req_app_id,
-//                        "requestedPermissions" :
-//                            [{
-//                                "streamId": "*", // some stream at root level or close or "*",
-//                                "level": "read",
-//                                "defaultName": "SemPryv"
-//                            }]
-//                        }
-//    request_access(root_permissions)
 });
 
-function get_event_one_call(url, token, event_id){
+function get_event_one_call(url, token, event_id, app_id){
     console.log('get_event_one_call');
     $.ajaxSetup({
       contentType: "application/json; charset=utf-8"
@@ -61,7 +35,7 @@ function get_event_one_call(url, token, event_id){
             consentText = resp['event']['content']['consentText'];
             data_for_request_access =
             {
-                'requestingAppId': event_id,
+                'requestingAppId': app_id,
                 'requestedPermissions':requestedPermissions,
                 "clientData":
                 {
@@ -78,11 +52,9 @@ function get_event_one_call(url, token, event_id){
                 let permission = "<tr><td>"+element.streamId+"</td><td>"+element.level+"</td><td>"+element.defaultName+"</td></tr>"
                 $("#requestedPermissions").append(permission);
             });
-
             data_for_request = data_for_request_access;
         }
     });
-
 }
 
 function search_for_semantics(requested_semantics, streams) {
@@ -132,7 +104,7 @@ function start_polling(poll_url){
                 var patientToken = d['token'];
                 data = {"username":d['username'],"token" : d['token']};
                 window.clearInterval(intervalID);
-                store_patient_access(patientUsername, patientToken)
+                store_patient_access(expertToken, patientUsername, patientToken)
                 console.log("post request");
 //                streams = get_streams_for_user(username, token)
 //                search_for_semantics(requested_semantics, streams);
