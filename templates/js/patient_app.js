@@ -31,6 +31,7 @@ function get_event_one_call(url, token, event_id, app_id){
         headers: {"authorization": token},
         dataType: 'json',
         success: function (resp) {
+        console.log('response from event one call: ', JSON.stringify(resp));
             requestedPermissions = resp['event']['content']['requestedPermissions'];
             consentText = resp['event']['content']['consentText'];
             data_for_request_access =
@@ -49,22 +50,14 @@ function get_event_one_call(url, token, event_id, app_id){
             console.log('data for create access: ',JSON.stringify(data_for_request_access));
             $("#requestingAppId").html(data_for_request_access.requestingAppId);
             data_for_request_access.requestedPermissions.forEach(function (element) {
-                let permission = "<tr><td>"+element.streamId+"</td><td>"+element.level+"</td><td>"+element.defaultName+"</td></tr>"
+//                let permission = "<tr><td>"+element.streamId+"</td><td>"+element.level+"</td><td>"+element.defaultName+"</td></tr>"
+                let permission = "<tr><td>"+JSON.stringify(element.concept.value)+"</td><td>"+element.level+"</td><td>"+element.defaultName+"</td></tr>"
                 $("#requestedPermissions").append(permission);
             });
             data_for_request = data_for_request_access;
         }
     });
 }
-
-function search_for_semantics(requested_semantics, streams) {
-        console.log(typeof streams)
-        for (i=0; i<streams.length; i++){
-            console.log(streams[i].children)
-        }
-        // get streams for user that signed in
-        // search for semantic terms in streams annotations
-    }
 
 function request_access(data) {
     $.ajaxSetup({
@@ -80,12 +73,13 @@ function request_access(data) {
         success: function (resp) {
             console.log('success from request access')
             url=resp['url'];
+            url_modified =url.substring(0,10)+'3'+url.substring(10,url.length)
             start_polling(resp['poll']);
             var width = 600;
             var height = 600;
             var top = screen.width/2;
             var left = screen.height/2;
-window.open(url,'popup','width='+width+',height='+height+', top='+top+', left='+left);
+            window.open(url_modified,'popup','width='+width+',height='+height+', top='+top+', left='+left);
         }
     });
 
@@ -106,8 +100,6 @@ function start_polling(poll_url){
                 window.clearInterval(intervalID);
                 store_patient_access(expertToken, patientUsername, patientToken)
                 console.log("post request");
-//                streams = get_streams_for_user(username, token)
-//                search_for_semantics(requested_semantics, streams);
                 $("#spinner").hide();
                 $("#successMsg").html("Patient credentials for "+ d['username'] +" were saved successfully in "+ expert_url.split('.')[0] +" account");
 

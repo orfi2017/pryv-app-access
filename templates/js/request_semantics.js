@@ -12,12 +12,10 @@ $(function() {
 
     consentText = 'https://pryv.com/terms-of-use/';
 //    request_semantics = JSON.parse($("#permissionsArea").val());
-    default_permissions = create_permissions_data();
-//    default_semantics = ['Heart','Weight'];
+    default_permissions = create_default_permissions_data();
     $("#permissionsArea").val(JSON.stringify(default_permissions));
-    permissions_data = JSON.parse($("#permissionsArea").val());
-//    permissions_data = default_permissions;
     $("#generate-link").click(function(){
+        permissions_data = JSON.parse($("#permissionsArea").val());
         campaign_name = $("#requestingCampName").val();
         app_id = 'pra-'+campaign_name;
         event_data = create_event_data(permissions_data, consentText, app_id);
@@ -75,24 +73,33 @@ function create_access_data(){
             }
 }
 
-function create_permissions_data(){
+function create_default_permissions_data(){
     return [
                 {
-                    "streamId": "heart",
-                    "level": "read",
-                    "defaultName": "Heart"
+                "concept": {
+                    "type": "keyword",
+                    "value": "Heart"
+                    },
+                "level": "read",
+                "defaultName": "TestKeyword"
                 },
                 {
-                     "streamId": "diary",
-                     "level": "read",
-                     "defaultName": "Journal"
-                 },
-                 {
-                     "streamId": "position",
-                     "level": "contribute",
-                     "defaultName": "Position"
-                 }
-          ];
+                "concept": {
+                    "type": "snomedct",
+                    "value": "438295007"
+                    },
+                "level": "read",
+                "defaultName": "TestSnomedCt"
+                },
+                {
+                "concept": {
+                    "type": "loinc",
+                    "value": "80582-0"
+                    },
+                "level": "read",
+                "defaultName": "TestLoinc"
+                }
+            ];
 }
 
 function batch_call(username, token, data){

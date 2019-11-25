@@ -1,5 +1,4 @@
 $(function() {
-    // TEST
     $("#login-button").click(function(){
         username = $('#expert-username').val();
         password = $('#expert-password').val();
