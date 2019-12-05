@@ -13,7 +13,8 @@ function auth_login(app_id, username, password){
       contentType: "application/json; charset=utf-8"
     });
 
-    url = "https://"+username+".pryv.me/auth/login";
+//    url = "https://"+username+".pryv.me/auth/login";
+    url = "https://"+username+".pryv.hevs.ch/auth/login";
     creds = {
         "username": username,
         "password": password,

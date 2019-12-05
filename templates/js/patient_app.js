@@ -63,7 +63,8 @@ function request_access(data) {
     $.ajaxSetup({
       contentType: "application/json; charset=utf-8"
     });
-	var url = "https://reg.pryv.me/access"
+//	var url = "https://reg.pryv.me/access"
+	var url = "https://reg.pryv.hevs.ch/access"
 	// ajax the JSON to the server
     $.ajax({
         url: url,
@@ -73,7 +74,7 @@ function request_access(data) {
         success: function (resp) {
             console.log('success from request access')
             url=resp['url'];
-            url_modified =url.substring(0,10)+'3'+url.substring(10,url.length)
+            url_modified =url.substring(0,10)+'2'+url.substring(10,url.length)
             start_polling(resp['poll']);
             var width = 600;
             var height = 600;

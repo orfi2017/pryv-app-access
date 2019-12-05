@@ -106,7 +106,8 @@ function batch_call(username, token, data){
     $.ajaxSetup({
       contentType: "application/json; charset=utf-8"
     });
-    url = "https://"+username+".pryv.me";
+//    url = "https://"+username+".pryv.me";
+    url = "https://"+username+".pryv.hevs.ch";
     $.ajax({
         url: url,
         type: 'post',
@@ -120,7 +121,8 @@ function batch_call(username, token, data){
 }
 
 function create_access(username, token, data){
-    url = "https://"+username+".pryv.me/accesses";
+//    url = "https://"+username+".pryv.me/accesses";
+    url = "https://"+username+".pryv.hevs.ch/accesses";
     $.ajax({
         url: url,
         type: 'post',
@@ -155,7 +157,8 @@ function create_event_data(requestedPermissions, consentText, appId){
 function create_event(username, token, data){
     console.log('create event', username, token, data);
 
-    url = "https://"+username+".pryv.me/events";
+//    url = "https://"+username+".pryv.me/events";
+    url = "https://"+username+".pryv.hevs.ch/events";
     $.ajax({
         url: url,
         type: 'post',
@@ -165,7 +168,9 @@ function create_event(username, token, data){
         success: function (data) {
             console.log('response event id', data['event']['id']);
             event_id = data['event']['id'];
-            link_text = "/patient_app.html?url="+expertUsername+".pryv.me&eventId="+event_id+"&expertToken="+expertToken +
+//            link_text = "/patient_app.html?url="+expertUsername+".pryv.me&eventId="+event_id+"&expertToken="+expertToken +
+//                        "&app_id="+app_id;
+            link_text = "/patient_app.html?url="+expertUsername+".pryv.hevs.ch&eventId="+event_id+"&expertToken="+expertToken +
                         "&app_id="+app_id;
             $("#link_area").append("<a href="+link_text+">Link for patients</a>");
         }
