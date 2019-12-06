@@ -1,0 +1,153 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body>
+<table align="center">
+        <tbody>
+        <tr>
+            <td class="leftColumn"><p><b>Application ID</b> (min length: 6)</p></td>
+            <td class="rightColumn"><input id="requestingAppId" type="text" value="app-web-access-test"></td>
+        </tr>
+        <tr>
+            <td class="leftColumn">
+                <p><b>Permissions</b> (See <a href="http://api.pryv.com/reference/#authorizing-your-app" target="_blank">API doc</a>)</p>
+            </td>
+            <td class="rightColumn">
+                <div id="permissionsViewInactive" style="display: none;"></div>
+                <div id="permissionsViewActive">
+                    <textarea id="permissionsArea" rows="10" cols="50"></textarea>
+                </div>
+            </td>
+        </tr>
+
+        <tr style="display: none;">
+            <td class="leftColumn">
+                <p><b>Authorization popup</b></p>
+                    <input type="checkbox" name="localAuth" id="localAuth">
+                    <label for="localAuth">Run on local web-auth (port 4443)</label>
+            </td>
+            <td class="rightColumn"><input name="reclaDevel" id="reclaDevel" type="text"></td>
+        </tr>
+        <tr style="display: none;">
+            <td class="leftColumn"><p><b>Language</b></p></td>
+            <td class="rightColumn">
+                <select name="languageCode" id="languageCode">
+                <option value="default">Browser</option>
+                <option value="en">English</option>
+                <option value="fr">French</option> </select>
+            </td>
+        </tr>
+        <tr style="display: none;">
+            <td class="leftColumn">
+                <p><b>Return URL (postlogin url)</b></p>
+                <p>auto# by default</p>
+                <p>self# or other url to avoid popup</p>
+            </td>
+            <td class="rightColumn"><input id="returnURL" name="returnURL" type="text" value="auto#"></td>
+        </tr>
+        <tr style="display: none;">
+            <td class="leftColumn"><p><b>State to simulate oauth</b><br>(needs returnURL)</p></td>
+            <td class="rightColumn"><input id="oauthState" name="oauthState" type="text"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input id="submitButton" type="submit" value="Request Access">
+            </td>
+        </tr>
+</tbody></table>
+<!--<div id="permissionsViewActive">-->
+<!--    <textarea id="permissionsArea"></textarea>-->
+<!--</div>-->
+<!--<button id="theButton">Request access</button>-->
+<div id="sign_in" align="center">
+</div>
+</body>
+
+<script type="text/javascript">
+
+
+window.onload = function() {
+    const data = {
+                  "requestingAppId": "test-app-id-2",
+                  "requestedPermissions": [
+                    {
+                      "streamId": "diary",
+                      "level": "read",
+                      "defaultName": "Journal"
+                    },
+                    {
+                      "streamId": "position",
+                      "level": "contribute",
+                      "defaultName": "Position"
+                    }
+                  ]};
+<!--    doWork(data)-->
+};
+
+function doWork(data) {
+    $.ajaxSetup({
+      contentType: "application/json; charset=utf-8"
+    });
+	var url = "https://reg.pryv.me/access"
+	// ajax the JSON to the server
+	$.post(url, JSON.stringify(data), function(d, status){
+       url=d['url'];
+ 	   start_polling(d['poll']);
+       $("#sign_in").append("<button onclick=window.open('"+url+"','popup','width=600,height=600'); return false;> Open Link in Popup </button>");
+
+	});
+	// stop link reloading the page
+ event.preventDefault();
+}
+
+function start_polling(poll_url){
+    console.log(poll_url);
+    let intervalID = window.setInterval(function(){
+        $.get(poll_url, function(d, status){
+            console.log(d['status']);
+            if (d['code'] == 200) {
+                var username = d['username'];
+                var token = d['token'];
+                data = {"username":d['username'],"token" : d['token']};
+                console.log(typeof data, data);
+                window.clearInterval(intervalID);
+                $.post("/access", JSON.stringify(data), function(d,status){
+                    console.log(status);
+                })
+            }
+        });
+    },3000);
+}
+
+var default_app_id = "test-app-id"
+
+var default_permissions_data= [
+    {
+      "streamId": "diary",
+      "level": "read",
+      "defaultName": "Journal"
+    },
+    {
+      "streamId": "position",
+      "level": "contribute",
+      "defaultName": "Position"
+    }
+  ]
+
+$("#requestingAppId").val(JSON.stringify(default_app_id));
+
+$("#permissionsArea").val(JSON.stringify(default_permissions_data));
+
+$("#submitButton").click(function(){
+    app_id = $("#requestingAppId").val();
+    permissions_data = $("#permissionsArea").val();
+    console.log(app_id);
+    console.log(permissions_data);
+    console.log(typeof permissions_data);
+    data = {"requestingAppId":JSON.parse(app_id), "requestedPermissions":JSON.parse(permissions_data)}
+    doWork(data) ;
+});
+
+</script>
+</html>

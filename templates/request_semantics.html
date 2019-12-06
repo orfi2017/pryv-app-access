@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/request_semantics.js"></script>
+    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="topnav">
+    <a>Pryv App</a>
+</div>
+<div class="back">
+    <div class="div-center">
+        <div class="content">
+            <p><b>Setup semantics required from patient</b></p>
+
+            <div class="form-group">
+                <label for="requestingCampName"><b>Campaign Name</b> (min length: 6)</label>
+                <input type="text" class="form-control" id="requestingCampName" value="monitoring">
+            </div>
+
+            <p>Enter semantics that you wish to request from patients:</p>
+
+            <div class="form-group">
+                <label for="permissionsArea"><b>Requested semantics</b> (See <a href="http://api.pryv.com/reference/#authorizing-your-app" target="_blank">API doc</a>)</label>
+                <textarea id="permissionsArea" rows="5" cols="50"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="termsOfUse"><b>Terms of use</b></label>
+                <textarea id="termsOfUse" rows="5" cols="50"></textarea>
+            </div>
+            <input id="generate-link" align="center" type="submit" value="Generate link for patients"/>
+            <div id="link_area" align="center"></div>
+        </div>
+    </div>
+</div>
+</body>
+<!--<div class="footer">-->
+<!--    <a>© 2019 Hes-so</a>-->
+<!--</div>-->
+</html>
