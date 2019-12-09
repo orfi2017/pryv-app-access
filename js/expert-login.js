@@ -29,7 +29,7 @@ function auth_login(app_id, username, password){
         dataType: 'json',
         success: function (d) {
             expertToken = d['token'];
-            window.location.href = "/request_semantics.html?expertUsername="+username+"&expertToken="+expertToken;
+            window.location.href = "./request_semantics.html?expertUsername="+username+"&expertToken="+expertToken;
         }
     });
 }
@@ -43,7 +43,7 @@ function delete_stream(username, stream_id, token){
         headers: {"authorization": token},
         dataType: 'json',
         success: function (data) {
-            window.location.href = "/request_semantics.html?expertToken="+token;
+            window.location.href = "./request_semantics.html?expertToken="+token;
         },
         error: function(e){
             console.log(e)

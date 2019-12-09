@@ -131,12 +131,12 @@ function create_access(username, token, data){
         dataType: 'json',
         success: function (data) {
             console.log('access created for token', token);
-//            window.location.href = "/request_semantics.html?expertToken="+token;
+//            window.location.href = "./request_semantics.html?expertToken="+token;
         },
         error: function(e){
             if(e['status']==400){
             console.log('access has been already created for token', token);
-//                window.location.href = "/request_semantics.html?expertToken="+token;
+//                window.location.href = "./request_semantics.html?expertToken="+token;
             }
         }
     });
@@ -168,9 +168,9 @@ function create_event(username, token, data){
         success: function (data) {
             console.log('response event id', data['event']['id']);
             event_id = data['event']['id'];
-//            link_text = "/patient_app.html?url="+expertUsername+".pryv.me&eventId="+event_id+"&expertToken="+expertToken +
+//            link_text = "./patient_app.html?url="+expertUsername+".pryv.me&eventId="+event_id+"&expertToken="+expertToken +
 //                        "&app_id="+app_id;
-            link_text = "/patient_app.html?url="+expertUsername+".pryv.hevs.ch&eventId="+event_id+"&expertToken="+expertToken +
+            link_text = "./patient_app.html?url="+expertUsername+".pryv.hevs.ch&eventId="+event_id+"&expertToken="+expertToken +
                         "&app_id="+app_id;
             $("#link_area").append("<a href="+link_text+">Link for patients</a>");
         }
