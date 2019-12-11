@@ -110,23 +110,6 @@ function start_polling(poll_url){
     },5000);
 }
 
-//    re=requests.get(url="https://orfeas.pryv.me/streams",params={"auth":"cjzy2ioal04xj0e40zdcy4sku"})
-function get_streams_for_user(username, token){
-	username = 'orfi2019'
-	token = 'ck1872ery4upf1kd3g9m3rhes'
-	var url = "https://"+username+".pryv.me/streams"
-	// ajax the JSON to the server
-    $.ajax({
-        url: url,
-        type: 'get',
-        data: {"auth" : token},
-        dataType: 'json',
-        success: function (resp) {
-            return resp.streams;
-        }
-    });
-}
-
 function store_patient_access(expertToken, patientUsername, patientToken, permissions){
     $('#success_message').append('<p>patient credentials were saved successfully</p>');
     console.log('create event', patientUsername, patientToken);
