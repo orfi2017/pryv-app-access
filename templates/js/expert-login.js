@@ -13,6 +13,7 @@ function auth_login(app_id, username, password){
       contentType: "application/json; charset=utf-8"
     });
     url = "https://"+username+".pryv.hevs.ch/auth/login";
+//    url = "https://"+username+".pryv.me/auth/login";
     creds = {
         "username": username,
         "password": password,
@@ -24,6 +25,7 @@ function auth_login(app_id, username, password){
         type: 'post',
         data: JSON.stringify(creds),
         headers: {'Origin':'https://'+app_id+'.pryv.hevs.ch'},
+//        headers: {'Origin':'https://'+app_id+'.pryv.me'},
         dataType: 'json',
         success: function (d) {
             expertToken = d['token'];

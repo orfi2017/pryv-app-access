@@ -1,4 +1,5 @@
 $(function() {
+    const QRCode = require('qrcode');
     url = window.location.href;
     url_params = parse_username_token_from_url(url);
     expertUsername = url_params[0];
@@ -166,6 +167,7 @@ function create_event(username, token, data){
         headers: {"authorization": token},
         dataType: 'json',
         success: function (data) {
+            alert('base64Png created?');
             console.log('response event id', data['event']['id']);
             event_id = data['event']['id'];
 //            link_text = "/patient_app.html?url="+expertUsername+".pryv.me&eventId="+event_id+"&expertToken="+expertToken +
@@ -173,6 +175,10 @@ function create_event(username, token, data){
             link_text = "/patient_app.html?url="+expertUsername+".pryv.hevs.ch&eventId="+event_id+"&expertToken="+expertToken +
                         "&app_id="+app_id;
             $("#link_area").append("<a href="+link_text+">Link for patients</a>");
-        }
+            alert('base64Png created?');
+            const base64Png = QRCode.toDataURL(link_text, {width: '400', type: 'png'});
+            alert('base64Png created?');
+            console.log(base64Png);
+            }
     });
 }
