@@ -1,5 +1,6 @@
+
 $(function() {
-//    const QRCode = require(['qrcode']);
+//    const QRCode = require('qrcode');
     url = window.location.href;
     url_params = parse_username_token_from_url(url);
     expertUsername = url_params[0];
@@ -175,8 +176,8 @@ function create_event(username, token, data){
                         "&app_id="+app_id;
             $("#link_area").append("<a href="+link_text+">Link for patients</a>");
 //            alert('base64Png created?');
-//            const base64Png = QRCode.toDataURL(["<a href="+link_text, {width: '400', type: 'png'}]);
-//            console.log(base64Png);
+            const base64Png = QRCode.toDataURL(["<a href="+link_text, {width: '400', type: 'png'}]);
+            console.log(base64Png);
             }
     });
 }
