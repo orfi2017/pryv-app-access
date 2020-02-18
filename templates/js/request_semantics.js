@@ -28,7 +28,7 @@ $(function() {
     $("#addSemantic").click(function(){
         var newSamantic = {
             concept : {
-                type: "",
+                type: $("#type").val(),
                 value: $("#concept").val()
             },
             level : $("#level").val(),
@@ -37,7 +37,7 @@ $(function() {
         default_permissions.push(newSamantic);
         $("#concept").val('');
         $("#defaultName").val('');
-        loadPermissions()
+        loadPermissions();
     });
 });
 
@@ -201,11 +201,11 @@ function create_event(username, token, data){
 function loadPermissions() {
     $("#requestedPermissions").empty();
 
-    $("#requestedPermissions").append("<tr>\n" + "<th>Concept</th>\n" + "<th>Level</th>\n" + "<th>Default name</th>\n" + "<th></th>\n" + " </tr>");
+    $("#requestedPermissions").append("<tr><th>Type</th><th>Concept</th><th>Level</th><th>Default name</th><th></th></tr>");
 
     default_permissions.forEach(function (element, i) {
 
-        let permission = "<tr><td>"+element.concept.value+"</td><td>"+element.level+"</td><td>"+element.defaultName+ "</td><td><i class='fa fa-trash'"+'onClick=\'deletePermission('+i+')\''+"></i></td></tr>"
+        let permission = "<tr><td>"+element.concept.type+"</td><td>"+element.concept.value+"</td><td>"+element.level+"</td><td>"+element.defaultName+ "</td><td><i class='fa fa-trash'"+'onClick=\'deletePermission('+i+')\''+"></i></td></tr>"
         $("#requestedPermissions").append(permission);
     });
 }
