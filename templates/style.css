@@ -9,8 +9,8 @@
 }
 
 .div-center {
-    width: 400px;
-    height: 400px;
+    width: auto;
+    height: auto;
     background-color: #fff;
     position: absolute;
     left: 0;
@@ -29,6 +29,11 @@
 div.content {
     display: table-cell;
     vertical-align: middle;
+}
+
+th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
 }
 
 #pryvButtonHolder {

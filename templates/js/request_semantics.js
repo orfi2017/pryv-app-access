@@ -13,15 +13,32 @@ $(function() {
     create_access(expertUsername, expertToken, data_for_create_access);
 
     consentText = 'https://pryv.com/terms-of-use/';
-//    request_semantics = JSON.parse($("#permissionsArea").val());
+
     default_permissions = create_default_permissions_data();
-    $("#permissionsArea").val(JSON.stringify(default_permissions));
+
+    loadPermissions();
+
     $("#generate-link").click(function(){
-        permissions_data = JSON.parse($("#permissionsArea").val());
+        permissions_data = default_permissions;
         campaign_name = $("#requestingCampName").val();
         app_id = 'pra-'+campaign_name;
         event_data = create_event_data(permissions_data, consentText, app_id);
         create_event(expertUsername, expertToken, event_data);
+    });
+
+    $("#addSemantic").click(function(){
+        var newSamantic = {
+            concept : {
+                type: $("#type").val(),
+                value: $("#concept").val()
+            },
+            level : $("#level").val(),
+            defaultName : $("#defaultName").val()
+        }
+        default_permissions.push(newSamantic);
+        $("#concept").val('');
+        $("#defaultName").val('');
+        loadPermissions();
     });
 });
 
@@ -181,3 +198,24 @@ function create_event(username, token, data){
             }
     });
 }
+
+function loadPermissions() {
+    $("#requestedPermissions").empty();
+
+    $("#requestedPermissions").append("<tr><th>Type</th><th>Concept</th><th>Level</th><th>Default name</th><th></th></tr>");
+
+    default_permissions.forEach(function (element, i) {
+
+        let permission = "<tr><td>"+element.concept.type+"</td><td>"+element.concept.value+"</td><td>"+element.level+"</td><td>"+element.defaultName+ "</td><td><i class='fa fa-trash'"+'onClick=\'deletePermission('+i+')\''+"></i></td></tr>"
+        $("#requestedPermissions").append(permission);
+    });
+}
+
+function deletePermission(index) {
+    default_permissions.splice(index, 1);
+    loadPermissions();
+}
+
+
+
+

@@ -3,6 +3,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="/js/build/qrcode.js"></script>
     <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src="/js/request_semantics.js"></script>
     <link href="style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -24,11 +25,35 @@
             <p>Enter semantics that you wish to request from patients:</p>
 
             <div class="form-group">
-                <label for="permissionsArea"><b>Requested semantics</b> (See <a href="http://api.pryv.com/reference/#authorizing-your-app" target="_blank">API doc</a>)</label>
-                <textarea id="permissionsArea" rows="5" cols="50"></textarea>
+                <label><b>Requested semantics</b> (See <a href="http://api.pryv.com/reference/#authorizing-your-app" target="_blank">API doc</a>)</label>
+
+                <table id="requestedPermissions"style="width:100%"></table>
+
+                <br>
+                <div id="container">
+                    <select id="type">
+                        <option value="keyword">keyword</option>
+                        <option value="snomedct">snomedct</option>
+                        <option value="loinc">loinc</option>
+                    </select>
+                    <input id="concept" type="text"  width="40px">
+                    <select id="level">
+                        <option value="read">Read</option>
+                        <option value="contribute">Contribute</option>
+                        <option value="manage">Manage</option>
+                    </select>
+                    <input id="defaultName" type="text">
+                    <input type="button" value="add" id="addSemantic" />
+                </div>
+                <hr/>
+
+
+
+
             </div>
             <div class="form-group">
                 <label for="termsOfUse"><b>Terms of use</b></label>
+                <br>
                 <textarea id="termsOfUse" rows="5" cols="50"></textarea>
             </div>
             <input id="generate-link" align="center" type="submit" value="Generate link for patients"/>
